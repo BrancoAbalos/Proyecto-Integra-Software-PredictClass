@@ -5,6 +5,9 @@ los beneficios y desventajas de estas decisiones. Todo esto con el fin de tener 
 como a la parte administrativa.
 
 Los estudiantes que somos participes de este proyecto somos:
+
   -Branco Abalos Ortiz (21.619.393-8)
+  
   -Nicolas Cordero Varas (20.543.155-1)
+  
   -Maximiliano Urrutia Araya (21.573.565-6)
