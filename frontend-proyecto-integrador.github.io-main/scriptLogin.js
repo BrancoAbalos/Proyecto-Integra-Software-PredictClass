@@ -13,7 +13,7 @@ const CONFIG = {
     REMEMBER_ME: 'ucn_remember_me'
   },
   VALIDATION: {
-    MIN_PASSWORD_LENGTH: 6,
+    MIN_PASSWORD_LENGTH: 4,
     MAX_LOGIN_ATTEMPTS: 3,
     LOCKOUT_DURATION: 300000 // 5 minutos en milisegundos
   }
@@ -84,12 +84,6 @@ class LoginApp {
       mobileMenuBtn.addEventListener('click', this.toggleMobileMenu.bind(this));
     }
 
-    // Tecla Enter en campos
-    document.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && (e.target.id === 'username' || e.target.id === 'password')) {
-        this.handleLogin(e);
-      }
-    });
   }
 
   // ===== VALIDACIÓN DE FORMULARIO =====
@@ -237,76 +231,57 @@ class LoginApp {
     }
   }
 
-  async performLogin(loginData) {
+
+async performLogin(loginData) {
+    // Construye la URL con tu API específica usando los datos del formulario
+    const url = `https://puclaro.ucn.cl/eross/avance/login.php?email=${encodeURIComponent(loginData.username)}&password=${encodeURIComponent(loginData.password)}`;
+    
     try {
-      const response = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINTS.LOGIN}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          username: loginData.username,
-          password: loginData.password
-        })
-      });
+        const response = await fetch(url);
+        const data = await response.json();
 
-      const data = await response.json();
-
-      if (response.ok) {
-        return { success: true, data };
-      } else {
-        return { 
-          success: false, 
-          error: data.message || 'Credenciales incorrectas' 
-        };
-      }
+        // Verifica si el login fue exitoso según tu API (si NO devuelve un error)
+        if (response.ok && !data.error) {
+            return { 
+                success: true, 
+                data: {
+                    // Guarda el rut devuelto para usarlo en handleLoginSuccess
+                    rut: data.rut,
+                    token: data.rut || 'dummy_token', // Usamos el rut como token temporal para evitar errores
+                    user: { rut: data.rut } 
+                } 
+            };
+        } else {
+            // Maneja credenciales incorrectas o errores de API
+            return { 
+                success: false, 
+                error: data.error || 'Credenciales incorrectas' 
+            };
+        }
     } catch (error) {
-      // Simulación temporal para desarrollo
-      console.warn('API no disponible, usando modo de desarrollo');
-      
-      // Simular respuesta exitosa para pruebas
-      if (loginData.username === 'demo' && loginData.password === 'demo123') {
+        console.error('Error de red al intentar login:', error);
         return {
-          success: true,
-          data: {
-            token: 'demo_token_123',
-            refreshToken: 'demo_refresh_456',
-            user: {
-              id: 1,
-              username: loginData.username,
-              email: 'demo@ucn.cl',
-              name: 'Usuario Demo',
-              role: 'student'
-            }
-          }
+            success: false,
+            error: 'Error de conexión con el servidor. Intenta de nuevo.'
         };
-      } else {
-        return {
-          success: false,
-          error: 'Credenciales incorrectas'
-        };
-      }
     }
-  }
+}
 
-  handleLoginSuccess(data, rememberMe) {
-    // Resetear intentos de login
+
+handleLoginSuccess(data, rememberMe) {
+    // 1. Guardar el RUT en sessionStorage (tu lógica original)
+    sessionStorage.setItem("rutUsuario", data.rut);
+    
+    // 2. Limpieza de intentos y mensaje de éxito (lógica de la clase)
     this.loginAttempts = 0;
     this.clearLockout();
-
-    // Guardar datos de sesión
-    this.saveSessionData(data, rememberMe);
-
-    // Mostrar mensaje de éxito
     this.showStatusMessage('success', '¡Inicio de sesión exitoso! Redirigiendo...');
 
-    // Simular redirección (en producción, redireccionar a dashboard)
+    // 3. Redirigir a dashboard.html (tu lógica original)
     setTimeout(() => {
-      console.log('Redirigiendo al dashboard...');
-      // window.location.href = '/dashboard';
-    }, 1500);
-  }
+        window.location.href = "dashboard.html";
+    }, 1500); // 1.5 segundos para que el usuario vea el mensaje
+}
 
   handleLoginError(errorMessage) {
     this.loginAttempts++;
