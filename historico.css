@@ -1,0 +1,157 @@
+:root{
+	--bg:#f7fbff;
+	--card:#ffffff;
+	--muted:#6b7b8e;
+	--accent:#e6f0ff;
+	--blue:#2b6cb0;
+	--gap:1rem;
+	--sidebar-width:220px;
+}
+html,body{height:100%;margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:#0b2238;
+	/* Evita que el documento muestre una barra horizontal */
+	overflow-x: hidden;
+}
+.page{display:flex;min-height:100vh;}
+.sidebar{
+	width:var(--sidebar-width);
+	min-width:var(--sidebar-width);
+	background:linear-gradient(180deg,#ffffff,#f0f6ff);
+	border-right:1px solid rgba(11,34,56,0.06);
+	padding:1rem;
+	box-sizing:border-box;
+}
+.brand{display:flex;align-items:center;gap:.6rem;padding:.4rem 0;margin-bottom:1rem}
+.brand .logo{width:36px;height:36px;border-radius:6px;background:var(--accent);display:inline-flex;align-items:center;justify-content:center;color:var(--blue);font-weight:600}
+.nav{display:flex;flex-direction:column;gap:.35rem;margin-top:.75rem}
+.nav a{color:var(--blue);text-decoration:none;padding:.45rem .5rem;border-radius:6px;font-weight:500}
+.nav a:hover{background:rgba(43,108,176,0.06)}
+.main{flex:1;padding:1.25rem;box-sizing:border-box;}
+.page-title{margin:0 0 .5rem 0;font-size:1.25rem;color:#05243a}
+.subtitle{margin:0 0 1rem 0;color:var(--muted);font-size:.95rem}
+.card{background:var(--card);border-radius:12px;box-shadow:0 6px 24px rgba(11,34,56,0.06);padding:1rem;min-height:66vh;display:flex;flex-direction:column;gap:.75rem;}
+.card-header{display:flex;justify-content:space-between;align-items:center}
+.card-actions{display:flex;gap:.5rem}
+.btn{background:transparent;border:1px solid rgba(11,34,56,0.06);padding:.45rem .6rem;border-radius:8px;color:var(--blue);cursor:pointer}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.hscroll-wrap{
+	position: relative;
+	margin-top: .5rem;
+	/* Solo scroll horizontal en este contenedor */
+	overflow-x: auto;
+	overflow-y: hidden;
+	/* Suaviza el scroll en iOS */
+	-webkit-overflow-scrolling: touch;
+	padding-bottom:.6rem;}
+.columnas{display:flex;gap:var(--gap);align-items:flex-start;min-height:380px;
+  flex-wrap: nowrap;
+}
+.columna{flex: 0 0 auto; /* importante para mantener ancho fijo en fila horizontal */
+  min-width:300px;
+  max-width:380px;
+  background:linear-gradient(180deg, #fff, var(--accent));
+  border: 1px solid rgba(43,108,176,0.08);
+  border-radius: 10px;
+  padding: .75rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;}
+.titulo-col{font-weight:600;color:var(--blue);display:flex;align-items:center;gap:.5rem}
+.cuerpo-col{flex:1;display:flex;flex-direction:column;gap:.5rem;align-items:stretch}
+.placeholder{flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);background:linear-gradient(180deg, rgba(43,108,176,0.02), transparent);border-radius:8px;padding:1rem;text-align:center;font-size:.95rem;}
+/* ===== Estilos para items de ramo ===== */
+.ramo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(11,34,56,0.04);
+  color: #05243a;
+  box-shadow: 0 1px 4px rgba(2,6,23,0.03);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.ramo .titulo-ramo {
+  font-weight: 600;
+}
+
+.ramo .meta-ramo {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Estados: aprobado (verde), reprobado (rojo), pendiente (neutral) */
+.ramo--aprobado {
+  background: rgba(16, 185, 129, 0.07); /* suave verde */
+  border-left: 4px solid var(--success-color, #10b981);
+}
+
+.ramo--reprobado {
+  background: rgba(239, 68, 68, 0.06); /* suave rojo */
+  border-left: 4px solid var(--error-color, #ef4444);
+}
+
+.ramo--pendiente {
+  background: rgba(43, 108, 176, 0.03); /* leve azul grisáceo */
+  border-left: 4px solid rgba(43,108,176,0.12);
+}
+
+/* Ajuste de tamaño de columnas para soportar hasta 10 semestres cómodamente */
+.columna {
+  min-width: 300px;   /* ampliado */
+  max-width: 380px;   /* ampliado */
+  background: linear-gradient(180deg, #fff, var(--accent));
+  border: 1px solid rgba(43, 108, 176, 0.08);
+  border-radius: 10px;
+  padding: .75rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+/* Botones de desplazamiento */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid rgba(11,34,56,0.06);
+  color: var(--blue);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(11,34,56,0.08);
+  transition: opacity 180ms ease, transform 120ms ease;
+}
+
+/* Posición específica */
+.scroll-left { left: 8px; }
+.scroll-right { right: 8px; }
+
+/* Icono tamaño */
+.scroll-btn i { font-size: 0.9rem; }
+
+/* Estados */
+.scroll-btn:hover { transform: translateY(-50%) scale(1.03); }
+.scroll-btn:active { transform: translateY(-50%) scale(0.98); }
+.scroll-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* Opcional: ocultar visualmente cuando disabled */
+.scroll-btn.hidden { visibility: hidden; pointer-events: none; }
+
+/* En pantallas pequeñas reduce tamaño y margen */
+@media (max-width: 600px) {
+  .scroll-btn { width: 34px; height: 34px; left: 6px; right: 6px; }
+}
+
+/* Evitar que el overflow de toda la página muestre scrollbar horizontal */
+html, body { overflow-x: hidden; }
